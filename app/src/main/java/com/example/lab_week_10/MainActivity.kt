@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.lab_week_10.viewmodels.TotalViewModel
 
+
 class MainActivity : AppCompatActivity() {
     private val viewModel by lazy {
         ViewModelProvider(this)[TotalViewModel::class.java]
@@ -23,11 +24,16 @@ class MainActivity : AppCompatActivity() {
             getString(R.string.text_total, total)
     }
 
-    private fun prepareViewModel() {
-        updateText(viewModel.total)
+    private fun prepareViewModel(){
+        // Observe the LiveData object
+        viewModel.total.observe(this, {
+
+            updateText(it)
+        })
         findViewById<Button>(R.id.button_increment).setOnClickListener {
-            val newTotal = viewModel.incrementTotal()
-            updateText(newTotal)
+            viewModel.incrementTotal()
         }
     }
+
+
 }
